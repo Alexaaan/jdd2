@@ -1,0 +1,100 @@
+{
+  "name": "JDD Platform - Tournois et Matchs 1v1",
+  "short_name": "JDD Platform",
+  "description": "Plateforme officielle pour les tournois JDD et matchs 1v1 avec classement Elo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "fr",
+  "categories": ["sports", "games"],
+  "icons": [
+    {
+      "src": "/icon-72.jpg",
+      "sizes": "72x72",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-96.jpg",
+      "sizes": "96x96",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-128.jpg",
+      "sizes": "128x128",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-144.jpg",
+      "sizes": "144x144",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-152.jpg",
+      "sizes": "152x152",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-192.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-384.jpg",
+      "sizes": "384x384",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.jpg",
+      "sizes": "390x844",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-desktop.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mes Matchs",
+      "short_name": "Matchs",
+      "description": "Voir mes matchs en cours et terminés",
+      "url": "/matches",
+      "icons": [{ "src": "/icon-192.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Tournois",
+      "short_name": "Tournois",
+      "description": "Parcourir les tournois disponibles",
+      "url": "/tournaments",
+      "icons": [{ "src": "/icon-192.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Classements",
+      "short_name": "Classements",
+      "description": "Voir les classements Elo et ATP",
+      "url": "/rankings",
+      "icons": [{ "src": "/icon-192.jpg", "sizes": "192x192" }]
+    }
+  ]
+}

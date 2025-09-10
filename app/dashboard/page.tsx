@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Trophy, Users, Calendar, TrendingUp } from "lucide-react"
 import Link from "next/link"
+import MobileNavigation from "@/components/mobile-navigation"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -146,6 +147,7 @@ export default async function DashboardPage() {
           </Card>
         </div>
       </div>
+      <MobileNavigation />
     </div>
   )
 }

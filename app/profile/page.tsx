@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { CalendarDays, MapPin, Phone, Mail, Trophy, TrendingUp, Users, Target, Edit } from "lucide-react"
 import Link from "next/link"
+import MobileNavigationWrapper from "@/components/mobile-navigation-wrapper"
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -395,6 +396,8 @@ export default async function ProfilePage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <MobileNavigationWrapper />
     </div>
   )
 }

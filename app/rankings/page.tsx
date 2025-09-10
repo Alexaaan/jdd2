@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Trophy, TrendingUp, TrendingDown, Minus, Crown, Medal, Award } from "lucide-react"
+import MobileNavigation from "@/components/mobile-navigation"
 
 interface Player {
   id: string
@@ -158,166 +159,169 @@ export default function RankingsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center mb-8">
-        <Trophy className="w-8 h-8 mr-3 text-yellow-500" />
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Classements JDD</h1>
-          <p className="text-gray-600">Classements officiels Elo et ATP</p>
+    <>
+      <MobileNavigation />
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center mb-8">
+          <Trophy className="w-8 h-8 mr-3 text-yellow-500" />
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Classements JDD</h1>
+            <p className="text-gray-600">Classements officiels Elo et ATP</p>
+          </div>
         </div>
+
+        {/* Statistiques globales */}
+        {stats && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-blue-600">{stats.total_players}</div>
+                <div className="text-sm text-gray-600">Joueurs actifs</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-green-600">{stats.average_elo}</div>
+                <div className="text-sm text-gray-600">Elo moyen</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-purple-600">{stats.highest_elo}</div>
+                <div className="text-sm text-gray-600">Elo le plus élevé</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-orange-600">{stats.total_matches}</div>
+                <div className="text-sm text-gray-600">Matchs joués</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-red-600">{stats.total_tournaments}</div>
+                <div className="text-sm text-gray-600">Tournois organisés</div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Classements */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Classements</CardTitle>
+            <CardDescription>Classements officiels basés sur les performances</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="elo">Classement Elo</TabsTrigger>
+                <TabsTrigger value="atp">Classement ATP</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="elo" className="mt-6">
+                <div className="space-y-2">
+                  {getPlayersByRanking("elo").map((player, index) => (
+                    <div
+                      key={player.id}
+                      className={`
+                        flex items-center justify-between p-4 rounded-lg border transition-colors
+                        ${index < 3 ? "bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200" : "hover:bg-gray-50"}
+                      `}
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-2xl font-bold text-gray-600 min-w-[3rem] text-center">#{index + 1}</span>
+                          {getRankIcon(index + 1)}
+                          {getRankChange(index + 1, player.previous_elo_rank)}
+                        </div>
+
+                        <div>
+                          <div className="font-medium text-lg">
+                            {player.first_name} {player.last_name}
+                          </div>
+                          <div className="text-sm text-gray-600">@{player.username}</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-6 text-right">
+                        <div>
+                          <div className="text-2xl font-bold text-blue-600">{player.elo_rating}</div>
+                          <div className="text-xs text-gray-600">Elo</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-medium">
+                            {player.matches_won}W - {player.matches_lost}L
+                          </div>
+                          <div className="text-xs text-gray-600">{player.win_rate.toFixed(1)}% victoires</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-medium text-yellow-600">{player.tournaments_won}</div>
+                          <div className="text-xs text-gray-600">Tournois gagnés</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="atp" className="mt-6">
+                <div className="space-y-2">
+                  {getPlayersByRanking("atp").map((player, index) => (
+                    <div
+                      key={player.id}
+                      className={`
+                        flex items-center justify-between p-4 rounded-lg border transition-colors
+                        ${index < 3 ? "bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200" : "hover:bg-gray-50"}
+                      `}
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-2xl font-bold text-gray-600 min-w-[3rem] text-center">#{index + 1}</span>
+                          {getRankIcon(index + 1)}
+                          {getRankChange(index + 1, player.previous_atp_rank)}
+                        </div>
+
+                        <div>
+                          <div className="font-medium text-lg">
+                            {player.first_name} {player.last_name}
+                          </div>
+                          <div className="text-sm text-gray-600">@{player.username}</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-6 text-right">
+                        <div>
+                          <div className="text-2xl font-bold text-purple-600">{player.atp_points}</div>
+                          <div className="text-xs text-gray-600">Points ATP</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-medium">{player.elo_rating}</div>
+                          <div className="text-xs text-gray-600">Elo (#{player.rank_elo})</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-medium text-yellow-600">{player.tournaments_won}</div>
+                          <div className="text-xs text-gray-600">Tournois gagnés</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            {players.length === 0 && (
+              <div className="text-center py-12">
+                <Trophy className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun classement disponible</h3>
+                <p className="text-gray-600">
+                  Les classements apparaîtront une fois que les joueurs auront commencé à jouer.
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
-
-      {/* Statistiques globales */}
-      {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-blue-600">{stats.total_players}</div>
-              <div className="text-sm text-gray-600">Joueurs actifs</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">{stats.average_elo}</div>
-              <div className="text-sm text-gray-600">Elo moyen</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-purple-600">{stats.highest_elo}</div>
-              <div className="text-sm text-gray-600">Elo le plus élevé</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-orange-600">{stats.total_matches}</div>
-              <div className="text-sm text-gray-600">Matchs joués</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-red-600">{stats.total_tournaments}</div>
-              <div className="text-sm text-gray-600">Tournois organisés</div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Classements */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Classements</CardTitle>
-          <CardDescription>Classements officiels basés sur les performances</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="elo">Classement Elo</TabsTrigger>
-              <TabsTrigger value="atp">Classement ATP</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="elo" className="mt-6">
-              <div className="space-y-2">
-                {getPlayersByRanking("elo").map((player, index) => (
-                  <div
-                    key={player.id}
-                    className={`
-                      flex items-center justify-between p-4 rounded-lg border transition-colors
-                      ${index < 3 ? "bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200" : "hover:bg-gray-50"}
-                    `}
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-gray-600 min-w-[3rem] text-center">#{index + 1}</span>
-                        {getRankIcon(index + 1)}
-                        {getRankChange(index + 1, player.previous_elo_rank)}
-                      </div>
-
-                      <div>
-                        <div className="font-medium text-lg">
-                          {player.first_name} {player.last_name}
-                        </div>
-                        <div className="text-sm text-gray-600">@{player.username}</div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-6 text-right">
-                      <div>
-                        <div className="text-2xl font-bold text-blue-600">{player.elo_rating}</div>
-                        <div className="text-xs text-gray-600">Elo</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-medium">
-                          {player.matches_won}W - {player.matches_lost}L
-                        </div>
-                        <div className="text-xs text-gray-600">{player.win_rate.toFixed(1)}% victoires</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-medium text-yellow-600">{player.tournaments_won}</div>
-                        <div className="text-xs text-gray-600">Tournois gagnés</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="atp" className="mt-6">
-              <div className="space-y-2">
-                {getPlayersByRanking("atp").map((player, index) => (
-                  <div
-                    key={player.id}
-                    className={`
-                      flex items-center justify-between p-4 rounded-lg border transition-colors
-                      ${index < 3 ? "bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200" : "hover:bg-gray-50"}
-                    `}
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-gray-600 min-w-[3rem] text-center">#{index + 1}</span>
-                        {getRankIcon(index + 1)}
-                        {getRankChange(index + 1, player.previous_atp_rank)}
-                      </div>
-
-                      <div>
-                        <div className="font-medium text-lg">
-                          {player.first_name} {player.last_name}
-                        </div>
-                        <div className="text-sm text-gray-600">@{player.username}</div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-6 text-right">
-                      <div>
-                        <div className="text-2xl font-bold text-purple-600">{player.atp_points}</div>
-                        <div className="text-xs text-gray-600">Points ATP</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-medium">{player.elo_rating}</div>
-                        <div className="text-xs text-gray-600">Elo (#{player.rank_elo})</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-medium text-yellow-600">{player.tournaments_won}</div>
-                        <div className="text-xs text-gray-600">Tournois gagnés</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
-
-          {players.length === 0 && (
-            <div className="text-center py-12">
-              <Trophy className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun classement disponible</h3>
-              <p className="text-gray-600">
-                Les classements apparaîtront une fois que les joueurs auront commencé à jouer.
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+    </>
   )
 }

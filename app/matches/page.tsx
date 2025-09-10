@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Calendar, Users, Trophy, Clock } from "lucide-react"
 import Link from "next/link"
+import MobileNavigationWrapper from "@/components/mobile-navigation-wrapper"
 
 export default async function MatchesPage() {
   const supabase = await createClient()
@@ -333,6 +334,8 @@ export default async function MatchesPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <MobileNavigationWrapper />
     </div>
   )
 }

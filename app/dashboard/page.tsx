@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Trophy, Users, Calendar, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import MobileNavigationWrapper from "@/components/mobile-navigation-wrapper";
+import ThemeToggle from "@/components/theme-toggle"
+import { ThemeLogo } from "@/components/theme-toggle";
+
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -27,7 +30,7 @@ export default async function DashboardPage() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-lg font-bold text-primary-foreground">JDD</span>
+              <ThemeLogo />
             </div>
             <h1 className="text-xl font-bold">JDD Platform</h1>
           </div>
@@ -35,6 +38,7 @@ export default async function DashboardPage() {
             <span className="text-sm text-muted-foreground">
               Bienvenue, {profile?.display_name || profile?.first_name || "Joueur"}
             </span>
+            <ThemeToggle />
             <form action="/auth/signout" method="post">
               <Button variant="ghost" type="submit">
                 Déconnexion

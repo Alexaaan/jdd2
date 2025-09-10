@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Trophy, Users, Calendar, TrendingUp } from "lucide-react"
+import Link from "next/link"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -110,7 +111,9 @@ export default async function DashboardPage() {
               <CardDescription>Défiez un autre joueur en match individuel</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full">Créer un match</Button>
+              <Link href="/matches/new">
+                <Button className="w-full">Créer un match</Button>
+                </Link>
             </CardContent>
           </Card>
 
@@ -120,9 +123,11 @@ export default async function DashboardPage() {
               <CardDescription>Inscrivez-vous aux prochains tournois</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full bg-transparent">
-                Voir les tournois
-              </Button>
+              <Link href="/tournaments">
+                <Button variant="outline" className="w-full bg-transparent">
+                  Voir les tournois
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -132,9 +137,11 @@ export default async function DashboardPage() {
               <CardDescription>Consultez votre position dans les classements</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full bg-transparent">
-                Voir les classements
-              </Button>
+              <Link href="/rankings">
+                <Button variant="outline" className="w-full bg-transparent">
+                  Voir les classements
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

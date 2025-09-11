@@ -1,43 +1,44 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { createBrowserClient } from "@supabase/ssr"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Users, Trophy, MapPin, Clock } from "lucide-react"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { createBrowserClient } from "@supabase/ssr";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Users, Trophy, MapPin, Clock } from "lucide-react";
+import { MobileNavigation } from "@/components/mobile-navigation";
+import Link from "next/link";
 
 interface Tournament {
-  id: string
-  name: string
-  description: string
-  start_date: string
-  end_date: string
-  registration_deadline: string
-  max_participants: number
-  entry_fee: number
-  prize_pool: number
-  location: string
-  status: "upcoming" | "registration_open" | "in_progress" | "completed"
-  format: "single_elimination" | "double_elimination" | "round_robin" | "swiss"
-  atp_points_winner: number
-  current_participants: number
+  id: string;
+  name: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  registration_deadline: string;
+  max_participants: number;
+  entry_fee: number;
+  prize_pool: number;
+  location: string;
+  status: "upcoming" | "registration_open" | "in_progress" | "completed";
+  format: "single_elimination" | "double_elimination" | "round_robin" | "swiss";
+  atp_points_winner: number;
+  current_participants: number;
 }
 
 export default function TournamentsPage() {
-  const [tournaments, setTournaments] = useState<Tournament[]>([])
-  const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<"all" | "upcoming" | "registration_open" | "in_progress" | "completed">("all")
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<"all" | "upcoming" | "registration_open" | "in_progress" | "completed">("all");
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  )
+  );
 
   useEffect(() => {
-    fetchTournaments()
-  }, [filter])
+    fetchTournaments();
+  }, [filter]);
 
   const fetchTournaments = async () => {
     try {
@@ -47,82 +48,84 @@ export default function TournamentsPage() {
           *,
           tournament_participants(count)
         `)
-        .order("start_date", { ascending: true })
+        .order("start_date", { ascending: true });
 
       if (filter !== "all") {
-        query = query.eq("status", filter)
+        query = query.eq("status", filter);
       }
 
-      const { data, error } = await query
+      const { data, error } = await query;
 
-      if (error) throw error
+      if (error) throw error;
 
       const tournamentsWithCount =
         data?.map((tournament) => ({
           ...tournament,
           current_participants: tournament.tournament_participants?.[0]?.count || 0,
-        })) || []
+        })) || [];
 
-      setTournaments(tournamentsWithCount)
+      setTournaments(tournamentsWithCount);
     } catch (error) {
-      console.error("Error fetching tournaments:", error)
+      console.error("Error fetching tournaments:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "upcoming":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "registration_open":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "in_progress":
-        return "bg-orange-100 text-orange-800"
+        return "bg-orange-100 text-orange-800";
       case "completed":
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const getStatusText = (status: string) => {
     switch (status) {
       case "upcoming":
-        return "À venir"
+        return "À venir";
       case "registration_open":
-        return "Inscriptions ouvertes"
+        return "Inscriptions ouvertes";
       case "in_progress":
-        return "En cours"
+        return "En cours";
       case "completed":
-        return "Terminé"
+        return "Terminé";
       default:
-        return status
+        return status;
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("fr-FR", {
       day: "numeric",
       month: "long",
       year: "numeric",
-    })
-  }
+    });
+  };
 
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
+        <MobileNavigation />
         <div className="animate-pulse space-y-4">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="h-48 bg-gray-200 rounded-lg"></div>
           ))}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <MobileNavigation />
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Tournois JDD</h1>
@@ -230,5 +233,5 @@ export default function TournamentsPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

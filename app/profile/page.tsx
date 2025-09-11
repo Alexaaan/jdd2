@@ -9,6 +9,8 @@ import { Progress } from "@/components/ui/progress"
 import { CalendarDays, MapPin, Phone, Mail, Trophy, TrendingUp, Users, Target, Edit } from "lucide-react"
 import Link from "next/link"
 import MobileNavigationWrapper from "@/components/mobile-navigation-wrapper"
+import ThemeToggle from "@/components/theme-toggle"
+import { ThemeLogo } from "@/components/theme-toggle";
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -65,7 +67,7 @@ export default async function ProfilePage() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-lg font-bold text-primary-foreground">JDD</span>
+              <ThemeLogo />
             </div>
             <h1 className="text-xl font-bold">JDD Platform</h1>
           </div>
@@ -73,6 +75,7 @@ export default async function ProfilePage() {
             <Button variant="ghost" asChild>
               <Link href="/dashboard">Tableau de bord</Link>
             </Button>
+            <ThemeToggle></ThemeToggle>
             <Button variant="outline" asChild>
               <Link href="/profile/edit">
                 <Edit className="w-4 h-4 mr-2" />

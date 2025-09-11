@@ -7,6 +7,7 @@ import Link from "next/link"
 import MobileNavigationWrapper from "@/components/mobile-navigation-wrapper";
 import ThemeToggle from "@/components/theme-toggle"
 import { ThemeLogo } from "@/components/theme-toggle";
+import LogoutButton from "@/components/LogoutButton"
 
 
 export default async function DashboardPage() {
@@ -39,11 +40,7 @@ export default async function DashboardPage() {
               Bienvenue, {profile?.display_name || profile?.first_name || "Joueur"}
             </span>
             <ThemeToggle />
-            <form action="/auth/signout" method="post">
-              <Button variant="ghost" type="submit">
-                Déconnexion
-              </Button>
-            </form>
+            <LogoutButton />
           </div>
         </div>
       </header>

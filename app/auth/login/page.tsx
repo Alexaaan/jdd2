@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { ThemeLogo } from "@/components/theme-toggle";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -44,7 +45,7 @@ export default function LoginPage() {
         <Card className="shadow-xl border-0 bg-card/80 backdrop-blur-sm">
           <CardHeader className="text-center space-y-4">
             <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-2xl font-bold text-primary-foreground">JDD</span>
+              <ThemeLogo />
             </div>
             <CardTitle className="text-2xl font-bold">Connexion</CardTitle>
             <CardDescription>Connectez-vous à votre compte JDD Platform</CardDescription>
